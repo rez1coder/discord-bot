@@ -30,7 +30,7 @@ class Developer(commands.Cog):
             ),
         )
 
-    @commands.Cog.listener("on_message_filter_passed")
+    @commands.Cog.listener("on_accepted_message")
     async def sync_handler(self, message: dc.Message) -> None:
         # Handle !sync command. This can't be a slash command because this command is
         # the one that actually adds the slash commands in the first place. This does

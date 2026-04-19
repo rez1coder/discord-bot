@@ -66,7 +66,11 @@ class MessageFilter(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: dc.Message) -> None:
-        if message.author == self.bot.user or not (msg_filter := self.check(message)):
+        if (
+            message.guild is None
+            or message.author == self.bot.user
+            or not (msg_filter := self.check(message))
+        ):
             return
         assert isinstance(message.channel, dc.TextChannel)
 
