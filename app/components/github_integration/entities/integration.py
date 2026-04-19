@@ -10,7 +10,7 @@ from .cache import entity_cache
 from .fmt import entity_message, extract_entities
 from .resolution import ENTITY_REGEX
 from app.components.github_integration.models import Entity
-from toolbox.discord import is_dm, safe_edit, suppress_embeds_after_delay
+from toolbox.discord import safe_edit, suppress_embeds_after_delay
 from toolbox.linker import ItemActions, MessageLinker, remove_view_after_delay
 
 if TYPE_CHECKING:
@@ -75,12 +75,9 @@ class GitHubEntities(commands.Cog):
     async def before_update_recent_mentions(self) -> None:
         await self.bot.wait_until_ready()
 
-    @commands.Cog.listener("on_message_filter_passed")
+    @commands.Cog.listener("on_accepted_message")
     async def reply_with_entities(self, message: dc.Message) -> None:
         if not ENTITY_REGEX.search(message.content):
-            return
-
-        if is_dm(message.author):
             return
 
         output = await entity_message(message)

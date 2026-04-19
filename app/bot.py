@@ -159,16 +159,18 @@ class GhosttyBot(commands.Bot):
         if message.author.bot or message.type not in REGULAR_MESSAGE_TYPES:
             return
 
-        # Simple test
-        if message.guild is None and message.content == "ping":
-            logger.debug(
-                "ping sent by {user}", user=pretty_print_account(message.author)
-            )
-            await try_dm(message.author, "pong")
+        if message.guild is None:
+            if message.content == "ping":
+                logger.debug(
+                    "ping sent by {user}", user=pretty_print_account(message.author)
+                )
+                await try_dm(message.author, "pong")
             return
 
-        if not self._fails_message_filters(message):
-            self.dispatch("message_filter_passed", message)
+        if self._fails_message_filters(message):
+            return
+
+        self.dispatch("accepted_message", message)
 
     @classmethod
     def get_component_extension_names(cls) -> frozenset[str]:
