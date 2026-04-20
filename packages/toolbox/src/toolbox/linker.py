@@ -236,7 +236,6 @@ class ItemActions(SafeView):
         button.disabled = True
         await interaction.response.edit_message(view=self)
         await interaction.followup.send(
-            "Message frozen. I will no longer react to"
-            " what happens to your original message.",
+            "Message frozen. This message will no longer update when yours does.",
             ephemeral=True,
         )
